@@ -3,7 +3,7 @@ title: "AIエージェントを「チームメイト」に。OSSでセルフホ�
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "opensource", "selfhosted", "docker", "devops"]
-published: false
+published: true
 ---
 
 :::message
