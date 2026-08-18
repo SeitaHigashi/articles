@@ -6,7 +6,9 @@ topics: ["ai", "opensource", "selfhosted", "docker", "devops"]
 published: false
 ---
 
+:::message
 この記事はAI(生成AI)によって作成され、AIによるレビューを経たのち、公開前に人間によるレビューを受けています。
+:::
 
 :::message
 本記事は情報公開・共有を目的として執筆しています。Multicaについては既に他の方が書かれた紹介記事も複数公開されており、内容が一部重複する可能性があります。あらかじめご了承ください。
