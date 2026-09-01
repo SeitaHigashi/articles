@@ -130,7 +130,7 @@ prefix = "ctrl+space"
 
 `tmux` と `zellij` は、どちらもプラグインによって機能を拡張できますが、仕組みは大きく異なります。
 
-- **tmux(TPM: Tmux Plugin Manager)**: プラグインの実体はシェルスクリプトで、`tmux` のCLIコマンドを叩いて動作します。約20年の歴史があり、`tmux-resurrect`(セッションの永続化)のような定番プラグインを含め、エコシステムの層が非常に厚いのが特徴です。一方で、プラグインはシェルスクリプトをそのまま読み込む形式のため、プラグイン自体がクラッシュしたり予期しない挙動をしたりするリスクを止める仕組みはあまりありません。
+- **tmux(TPM: Tmux Plugin Manager)**: プラグインの実体はシェルスクリプトで、`tmux` のCLIコマンドを叩いて動作します。約20年の歴史があり、[`tmux-resurrect`](https://github.com/tmux-plugins/tmux-resurrect)(セッションの永続化)のような定番プラグインを含め、エコシステムの層が非常に厚いのが特徴です。一方で、プラグインはシェルスクリプトをそのまま読み込む形式のため、プラグイン自体がクラッシュしたり予期しない挙動をしたりするリスクを止める仕組みはあまりありません。
 - **zellij**: プラグインはWASM(WebAssembly)モジュールとして動作し、Rust・Go・Cなど、WASMにコンパイルできる言語であれば書けます。サンドボックス化されているため、プラグインが本体をクラッシュさせにくいという安全性の面でのメリットがある一方、エコシステムの規模はtmuxに比べるとまだ小さいとされています。
 - **Herdr**: プラグインはローカル実行形式で、マニフェストファイル(`herdr-plugin.toml`)を含むGitHubリポジトリに `herdr-plugin` というトピックタグを付けることで、マーケットプレイスに自動的に登録される仕組みのようです。公式サイトの記載では数百件規模のプラグインが登録されているとのことですが、この数値は変動が速く、また公式による審査(レビュー)は行われていない旨も明記されています。
 
@@ -145,13 +145,13 @@ Herdrのプラグイン件数やマーケットプレイスの実態は、執筆
 Herdrの最大の売りは「AIエージェントごとの working / idle / blocked 状態をサイドバーに表示する」機能ですが、これに相当する機能をtmux/zellijでもプラグインとして後付けできないか、という観点でも調べてみました。結論としては、**同種のコンセプトのサードパーティ製プラグインは複数存在します。**
 
 **tmux向け**
-- `tmux-agent-indicator`: 各ペインのAIエージェントを `running` / `needs-input` / `done` の3状態で分類し、ペイン枠線・ウィンドウタイトルの色・ステータスバーのアイコンで可視化します。Claude Code・Codex・OpenCode・カスタムエージェントに対応。エージェント側のフック(プロンプト送信・許可要求・停止コマンドなどのイベント)を主な検知手段とし、フック未対応のエージェントに対してはプロセス検知にフォールバックする方式のようです。
-- `tmux-agent-sidebar` / `tmux-agent-status`: セッション横断でAIエージェント(Claude Code、Codex、OpenCodeなど)の Working / Blocked / Idle をサイドバー表示する、より「Herdrのサイドバー」に近いコンセプトのプラグインです。
+- [`tmux-agent-indicator`](https://github.com/accessd/tmux-agent-indicator): 各ペインのAIエージェントを `running` / `needs-input` / `done` の3状態で分類し、ペイン枠線・ウィンドウタイトルの色・ステータスバーのアイコンで可視化します。Claude Code・Codex・OpenCode・カスタムエージェントに対応。エージェント側のフック(プロンプト送信・許可要求・停止コマンドなどのイベント)を主な検知手段とし、フック未対応のエージェントに対してはプロセス検知にフォールバックする方式のようです。
+- [`tmux-agent-sidebar`](https://github.com/hiroppy/tmux-agent-sidebar) / [`tmux-agent-status`](https://github.com/samleeney/tmux-agent-status): セッション横断でAIエージェント(Claude Code、Codex、OpenCodeなど)の Working / Blocked / Idle をサイドバー表示する、より「Herdrのサイドバー」に近いコンセプトのプラグインです。
 
 **zellij向け**
-- `zellaude`: Claude Codeセッションの活動状況をタブに表示するWASMプラグインで、状態の色分け、待機中セッションへの自動フォーカス、権限確認発生時のフラッシュ通知などを備えています。
-- `zellij-attention`: Claude Codeのフック(`Notification` / `Stop` イベント)からパイプメッセージを受け取り、対応するタブに「待機中」「完了」の通知アイコンを付与するプラグインです。
-- `zj-agents`: プロセス・画面出力から Idle/Working/Blocked/Done を分類し、フローティングサイドバーで表示するエンジンで、Claude・Codex・Grok・Piなど複数エージェントに対応するとされています。
+- [`zellaude`](https://github.com/ishefi/zellaude): Claude Codeセッションの活動状況をタブに表示するWASMプラグインで、状態の色分け、待機中セッションへの自動フォーカス、権限確認発生時のフラッシュ通知などを備えています。
+- [`zellij-attention`](https://github.com/KiryuuLight/zellij-attention): Claude Codeのフック(`Notification` / `Stop` イベント)からパイプメッセージを受け取り、対応するタブに「待機中」「完了」の通知アイコンを付与するプラグインです。
+- [`falcode-zellij`](https://github.com/victor-falcon/falcode-zellij): 稼働中のAIエージェント(OpenCode・pi・oh-my-pi・Claude Codeなど)のペインをZellijセッション横断でフローティングポップアップに一覧表示するプラグインです。
 
 :::message
 上記のプラグインはすべてGitHub上で実在を確認しましたが(READMEの内容を要約しています)、実際に導入して動作を検証したものではありません。開発の活発さ・メンテナンス状況・対応バージョンなどはご自身でリポジトリを確認の上、判断してください。
